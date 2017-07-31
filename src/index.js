@@ -2,6 +2,15 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import App from './App.js'
 
-ReactDOM.render(<App />,
+import { Provider } from 'react-redux'
+import { createStore } from 'redux'
+import TodoReducer from "./reducers"
+
+let store = createStore(TodoReducer);
+
+ReactDOM.render(
+  <Provider store={store}>
+    <App />
+  </Provider>,
   document.getElementById('root')
 )

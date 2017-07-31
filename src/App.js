@@ -3,26 +3,20 @@ import ListHeader from './components/ListHeader'
 import ItemInput from './components/ItemInput'
 import ItemContainer from './components/ItemContainer'
 
-class App extends React.Component{
+import { connect } from 'react-redux'
+import { addTask } from './actions'
+
+class AppContainer extends React.Component{
   constructor(props){
     super(props);
-    this.state={
-      items:[
-        {key: 1, text: "ir al baño"},
-        {key: 2, text: "ir al mercado"},
-        {key: 3, text: "ambas y ninguna"}
-      ]
-    }
+    this.state={}
   }
 
   handleClick = (e) =>{
     e.preventDefault()
-    var aux = this.state.items
     var text = document.getElementById("task").value
-    var key = aux[aux.length - 1].key+1
-    aux.push({ key , text })
-    this.setState({items: aux})
-    console.log(this.state.items)
+    console.log("text: "+text)
+    this.props.dispatch(addTask(text));
   }
 
   render(){
@@ -30,10 +24,24 @@ class App extends React.Component{
       <div>
         <ListHeader title={"Lista"}/>
         <ItemInput handleClick={this.handleClick}/>
-        <ItemContainer items={this.state.items}/>
+        <ItemContainer items={this.props.items}/>
       </div>
     );
   }
 }
+
+const mapStateToProps = (state) =>{
+  return{
+    items: state.todo
+  }
+}
+
+const mapDispatchToProps = (dispatch)=>{
+  return{
+    dispatch: dispatch
+  }
+}
+
+const App = connect(mapStateToProps,mapDispatchToProps)(AppContainer)
 
 export default App;
